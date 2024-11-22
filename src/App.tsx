@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Wrapper from "@/components/global/Wrapper";
+import Header from "@/components/Header";
+import { DimensionModel, Shape2dModel, UnitsModel } from "@/types";
+import { useCallback, useState } from "react";
+import "./App.css";
+import DimensionControls from "./components/DimensionControls";
+import FormulaInfoCard from "./components/FormulaInfoCard";
+import BackgroundWrapper from "./components/global/BackgroundWrapper";
+import ShapeControls from "./components/ShapeControls";
+import ShapeResult from "./components/ShapeResult";
+import { SHAPES_2D, UNITS } from "./utils/constants";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedShape, setSelectedShape] = useState<Shape2dModel>(
+    SHAPES_2D.RECTANGLE
+  );
+  const [selectedUnit, setSelectedUnit] = useState<UnitsModel>(UNITS.METERS);
+  const [dimension, setDimension] = useState<DimensionModel>({
+    height: 7,
+    width: 5,
+    length: 7,
+    side: 7,
+    radius: 9,
+    base: 5,
+    sideA: 5,
+    sideB: 4,
+    sideC: 15,
+  });
+
+  const handleDimensionChange = useCallback(
+    (key: string, value: number) => {
+      setDimension((prev) => ({ ...prev, [key]: value }));
+    },
+    [setDimension]
+  );
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="w-full p-3 bg-gray-1 flex flex-col">
+        <Wrapper>
+          <Header />
+          <BackgroundWrapper>
+            <div className="flex flex-col gap-y-5 pb-4">
+              <ShapeControls
+                selectedShape={selectedShape}
+                setSelectedShape={setSelectedShape}
+                selectedUnit={selectedUnit}
+                setSelectedUnit={setSelectedUnit}
+              />
+              <DimensionControls
+                dimension={dimension}
+                onChange={handleDimensionChange}
+                selectedShape={selectedShape}
+              />
+            </div>
+          </BackgroundWrapper>
+          <ShapeResult
+            selectedShape={selectedShape}
+            dimension={dimension}
+            unit={selectedUnit}
+          />
+          <BackgroundWrapper>
+            <FormulaInfoCard selectedShape={selectedShape} />
+          </BackgroundWrapper>
+        </Wrapper>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
