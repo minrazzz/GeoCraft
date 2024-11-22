@@ -18,24 +18,7 @@ function App() {
       <div className="w-full p-3 bg-gray-1 flex flex-col">
         <Wrapper>
           <Header />
-          {/* <div className="mb-5 flex items-center justify-start">
-            <button
-              className={`px-7 py-3 flex items-center justify-center border border-border rounded-md shadow-sm ${
-                tab === "2d" ? "bg-blue-500" : "bg-gray-300"
-              }`}
-              onClick={() => setTab("2d")}
-            >
-              2D
-            </button>
-            <button
-              className={`px-7 py-3 flex items-center justify-center border border-border rounded-md shadow-sm ${
-                tab === "3d" ? "bg-blue-500" : "bg-gray-300"
-              }`}
-              onClick={() => setTab("3d")}
-            >
-              3D
-            </button>
-          </div> */}
+
           <Tabs
             defaultValue="account"
             value={tab}
