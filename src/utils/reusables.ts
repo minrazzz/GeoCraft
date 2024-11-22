@@ -1,4 +1,4 @@
-import { Shape2dModel, UnitsModel } from "@/types";
+import { Shape2dModel, Shape3dModel, UnitsModel } from "@/types";
 
 export const calculateRectangleArea = (length: number, width: number): number =>
   length * width;
@@ -163,6 +163,67 @@ export const validateShapeDimensions = (
   }
 };
 
+const validateCubeDimensions = (dimensions: Record<string, number>) => {
+  const errors: Record<string, string> = {};
+  if (!isPositiveNumber(dimensions.cside)) {
+    errors.cside = "Side length must be greater than 0.";
+  }
+  return errors;
+};
+
+const validateCuboidDimensions = (dimensions: Record<string, number>) => {
+  const errors: Record<string, string> = {};
+  if (!isPositiveNumber(dimensions.length)) {
+    errors.length = "Length must be greater than 0.";
+  }
+  if (!isPositiveNumber(dimensions.width)) {
+    errors.width = "Width must be greater than 0.";
+  }
+  if (!isPositiveNumber(dimensions.height)) {
+    errors.height = "Height must be greater than 0.";
+  }
+  return errors;
+};
+
+const validateSphereDimensions = (dimensions: Record<string, number>) => {
+  const errors: Record<string, string> = {};
+  if (!isPositiveNumber(dimensions.radius)) {
+    errors.radius = "Radius must be greater than 0.";
+  }
+  return errors;
+};
+
+const validateTetrahedronDimensions = (dimensions: Record<string, number>) => {
+  const errors: Record<string, string> = {};
+  if (!isPositiveNumber(dimensions.tside)) {
+    errors.tside = "Side length must be greater than 0.";
+  }
+  return errors;
+};
+
+export const validate3DShapeDimensions = (
+  selectedShape: Shape3dModel,
+  dimensions: Record<string, number>,
+  key: string
+): Record<string, string> => {
+  const errors: Record<string, string> = {};
+
+  switch (selectedShape) {
+    case "cube":
+      return validateCubeDimensions(dimensions);
+    case "cuboid":
+      return validateCuboidDimensions(dimensions);
+    case "sphere":
+      return validateSphereDimensions(dimensions);
+    case "tetrahedron":
+      return validateTetrahedronDimensions(dimensions);
+
+    default:
+      errors.general = "Invalid shape selected.";
+      return errors;
+  }
+};
+
 export const extractFullUnitNames = (unit: UnitsModel) => {
   switch (unit) {
     case "in":
@@ -173,5 +234,69 @@ export const extractFullUnitNames = (unit: UnitsModel) => {
       return "Meters";
     default:
       return "Meters";
+  }
+};
+
+export const calculateCubeSurfaceArea = (side: number): number =>
+  6 * side * side;
+export const calculateCubeVolume = (side: number): number => side * side * side;
+
+export const calculateCuboidSurfaceArea = (
+  length: number,
+  width: number,
+  height: number
+): number => 2 * (length * width + length * height + width * height);
+export const calculateCuboidVolume = (
+  length: number,
+  width: number,
+  height: number
+): number => length * width * height;
+
+export const calculateSphereSurfaceArea = (radius: number): number =>
+  4 * Math.PI * radius * radius;
+export const calculateSphereVolume = (radius: number): number =>
+  (4 / 3) * Math.PI * radius * radius * radius;
+
+export const calculateTetrahedronSurfaceArea = (side: number): number =>
+  Math.sqrt(3) * side * side;
+export const calculateTetrahedronVolume = (side: number): number =>
+  (Math.sqrt(2) / 12) * side * side * side;
+
+export const calculateThreeDAreaAndPerimeter = (
+  selectedShape: Shape3dModel,
+  dimension: Record<string, number>
+) => {
+  switch (selectedShape) {
+    case "cube":
+      return {
+        surfaceArea: calculateCubeSurfaceArea(dimension?.cside),
+        volume: calculateCubeVolume(dimension?.cside),
+      };
+    case "cuboid":
+      return {
+        surfaceArea: calculateCuboidSurfaceArea(
+          dimension?.length,
+          dimension?.width,
+          dimension?.height
+        ),
+        volume: calculateCuboidVolume(
+          dimension?.length,
+          dimension?.width,
+          dimension?.height
+        ),
+      };
+    case "sphere":
+      return {
+        surfaceArea: calculateSphereSurfaceArea(dimension?.radius),
+        volume: calculateSphereVolume(dimension?.radius),
+      };
+    case "tetrahedron":
+      return {
+        surfaceArea: calculateTetrahedronSurfaceArea(dimension?.tside),
+        volume: calculateTetrahedronVolume(dimension?.tside),
+      };
+
+    default:
+      return null;
   }
 };

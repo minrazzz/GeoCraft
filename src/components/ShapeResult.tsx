@@ -1,4 +1,4 @@
-import { ShapeResultProps } from "@/types";
+import { Shape2dModel, ShapeResultProps } from "@/types";
 import { calculateAreaAndPerimeter, hasDecimal } from "@/utils/reusables";
 import { AnimatePresence } from "motion/react";
 import { FC, useMemo } from "react";
@@ -13,7 +13,11 @@ const ShapeResult: FC<ShapeResultProps> = ({
   unit,
 }) => {
   const metrics = useMemo(
-    () => calculateAreaAndPerimeter(selectedShape, dimension),
+    () =>
+      calculateAreaAndPerimeter(
+        selectedShape as Shape2dModel,
+        dimension as Record<string, number>
+      ),
     [selectedShape, dimension]
   );
 
@@ -22,17 +26,24 @@ const ShapeResult: FC<ShapeResultProps> = ({
       <div className="">
         <AnimatePresence mode="wait">
           {selectedShape === "rectangle" && (
-            <Rectangle length={dimension?.length} width={dimension?.width} />
+            <Rectangle
+              length={dimension?.length as number}
+              width={dimension?.width as number}
+            />
           )}
-          {selectedShape === "square" && <Square side={dimension?.side} />}
-          {selectedShape === "circle" && <Circle radius={dimension?.radius} />}
+          {selectedShape === "square" && (
+            <Square side={dimension?.side as number} />
+          )}
+          {selectedShape === "circle" && (
+            <Circle radius={dimension?.radius as number} />
+          )}
           {selectedShape === "triangle" && (
             <Triangle
-              base={dimension?.base}
-              height={dimension?.height}
-              sideA={dimension?.sideA}
-              sideB={dimension?.sideB}
-              sideC={dimension?.sideC}
+              base={dimension?.base as number}
+              height={dimension?.height as number}
+              sideA={dimension?.sideA as number}
+              sideB={dimension?.sideB as number}
+              sideC={dimension?.sideC as number}
             />
           )}
         </AnimatePresence>

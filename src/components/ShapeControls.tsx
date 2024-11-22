@@ -6,6 +6,7 @@ export default function ShapeControls({
   selectedUnit,
   setSelectedShape,
   setSelectedUnit,
+  title,
 }: ShapeControlsProps) {
   return (
     <div className="w-full">
@@ -15,7 +16,7 @@ export default function ShapeControls({
           <ControlSelector
             selectedValue={selectedShape}
             setSelectedValue={setSelectedShape}
-            title="shapes"
+            title={title}
           />
         </div>
         <div className="flex-1">

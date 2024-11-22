@@ -1,4 +1,4 @@
-import { SelectComponentProps, Shape2dModel } from "@/types";
+import { SelectComponentProps } from "@/types";
 import { FC, useCallback } from "react";
 import {
   Select,

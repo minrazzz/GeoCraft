@@ -1,7 +1,7 @@
-import { DynamicInputsProps, DimensionModel, Shape2dModel } from "@/types";
+import { DimensionModel, DynamicInputsProps, Shape2dModel } from "@/types";
+import { validateShapeDimensions } from "@/utils/reusables";
 import { FC, useState } from "react";
 import InputComponent from "./controllers/InputComponent";
-import { validateShapeDimensions } from "@/utils/reusables";
 
 const renderInputDimension = (
   dimension: DimensionModel,
@@ -16,7 +16,7 @@ const renderInputDimension = (
           <InputComponent
             id="length"
             onChange={handleChange}
-            value={dimension?.length}
+            value={dimension?.length as number}
             type="number"
             title="Length"
             error={errors?.length}
@@ -24,7 +24,7 @@ const renderInputDimension = (
           <InputComponent
             id="width"
             onChange={handleChange}
-            value={dimension?.width}
+            value={dimension?.width as number}
             type="number"
             title="Width"
             error={errors?.width}
@@ -37,7 +37,7 @@ const renderInputDimension = (
         <InputComponent
           id="side"
           onChange={handleChange}
-          value={dimension?.side}
+          value={dimension?.side as number}
           type="number"
           title="Side length"
           error={errors?.side}
@@ -49,7 +49,7 @@ const renderInputDimension = (
         <InputComponent
           id="radius"
           onChange={handleChange}
-          value={dimension?.radius}
+          value={dimension?.radius as number}
           type="number"
           title="Radius"
           error={errors?.radius}
@@ -63,7 +63,7 @@ const renderInputDimension = (
             <InputComponent
               id="base"
               onChange={handleChange}
-              value={dimension?.base}
+              value={dimension?.base as number}
               type="number"
               title="Base"
               error={errors?.base}
@@ -71,7 +71,7 @@ const renderInputDimension = (
             <InputComponent
               id="height"
               onChange={handleChange}
-              value={dimension?.height}
+              value={dimension?.height as number}
               type="number"
               title="Height"
               error={errors?.height}
@@ -80,7 +80,7 @@ const renderInputDimension = (
           <InputComponent
             id="sideA"
             onChange={handleChange}
-            value={dimension?.sideA}
+            value={dimension?.sideA as number}
             type="number"
             title="SideA"
             error={errors?.sideA}
@@ -88,7 +88,7 @@ const renderInputDimension = (
           <InputComponent
             id="sideB"
             onChange={handleChange}
-            value={dimension?.sideB}
+            value={dimension?.sideB as number}
             type="number"
             title="sideB"
             error={errors?.sideB}
@@ -96,7 +96,7 @@ const renderInputDimension = (
           <InputComponent
             id="sideC"
             onChange={handleChange}
-            value={dimension?.sideC}
+            value={dimension?.sideC as number}
             type="number"
             title="SideC"
             error={errors?.sideC}
@@ -110,7 +110,7 @@ const renderInputDimension = (
           <InputComponent
             id="length"
             onChange={handleChange}
-            value={dimension?.length}
+            value={dimension?.length as number}
             type="number"
             title="Length"
             error={errors?.length}
@@ -118,7 +118,7 @@ const renderInputDimension = (
           <InputComponent
             id="width"
             onChange={handleChange}
-            value={dimension?.width}
+            value={dimension?.width as number}
             type="number"
             title="Width"
             error={errors?.width}
@@ -134,15 +134,16 @@ const DimensionControls: FC<DynamicInputsProps> = ({
   selectedShape,
 }) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const [inputValues, setInputValues] = useState<DimensionModel>(dimension);
+  const [inputValues, setInputValues] = useState<DimensionModel>(
+    dimension as DimensionModel
+  );
 
   const handleChange = (key: string, value: number) => {
     setInputValues((prev) => ({ ...prev, [key]: value }));
     const updatedDimensions = { ...dimension, [key]: value };
     const validationErrors = validateShapeDimensions(
-      selectedShape,
-      updatedDimensions,
+      selectedShape as Shape2dModel,
+      updatedDimensions as Record<string, number>,
       key
     );
 
@@ -155,7 +156,12 @@ const DimensionControls: FC<DynamicInputsProps> = ({
 
   return (
     <div>
-      {renderInputDimension(inputValues, selectedShape, handleChange, errors)}
+      {renderInputDimension(
+        inputValues,
+        selectedShape as Shape2dModel,
+        handleChange,
+        errors
+      )}
     </div>
   );
 };

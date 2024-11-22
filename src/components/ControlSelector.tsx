@@ -1,8 +1,8 @@
 import { ControlSelectorProps, UnitsModel } from "@/types";
 import { CONTROL_OPTIONS } from "@/utils/constants";
-import { FC, useCallback, useMemo } from "react";
-import SelectComponent from "./controllers/SelectComponent";
 import { extractFullUnitNames } from "@/utils/reusables";
+import { FC, useMemo } from "react";
+import SelectComponent from "./controllers/SelectComponent";
 
 const ControlSelector: FC<ControlSelectorProps> = ({
   selectedValue,
@@ -28,7 +28,7 @@ const ControlSelector: FC<ControlSelectorProps> = ({
       selectedValue={selectedValue}
       setSelectedValue={setSelectedValue}
       title={title}
-      options={options}
+      options={options as any}
     />
   );
 };
